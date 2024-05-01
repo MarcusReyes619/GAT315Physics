@@ -275,6 +275,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\body.h" />
+    <ClInclude Include="src\intergrator.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\world.h" />
   </ItemGroup>

@@ -1,12 +1,12 @@
 #include "body.h"
 #include "raylib.h"
 #include "Math.h"
+#include "intergrator.h"
 #include "raymath.h"
 #include "world.h"
 #include <stdlib.h>
 #include <assert.h>
 
-#define MAX_BODIES 10000
 
 int main(void)
 {
@@ -23,17 +23,33 @@ int main(void)
 		//update
 		float dt = GetFrameTime();
 		float fps = (float)GetFPS();
-
+		
 		Vector2 pos = GetMousePosition();
-		if (IsMouseButtonPressed(0)) {
+		if (IsMouseButtonDown(0)) {
 
-			Body* body = CreateBody();
+			NcBody* body = CreateBody();
 			body->pos = pos;
-			body->vel = CreateVector2(GetRandomFloatValue(-5, 5), GetRandomFloatValue(5, -5));
-
+			
+			body->mass = GetRandomFloatValue(1, 10);
 
 		}
 
+		//apply force
+		NcBody* body = ncBodies;
+		while (body) // do while we have a valid pointer, will be NULL at the end of the list
+		{
+			ApplyForce(body, CreateVector2(0,-200));
+			body = body->next;
+		}
+
+		//apply force
+		body = ncBodies;
+		while (body) 
+		{
+			ExplicitEuler(body, dt);
+			ClearForce(body);
+			body = body->next;
+		}
 
 		//draw
 		BeginDrawing();
@@ -43,15 +59,12 @@ int main(void)
 		DrawText(TextFormat("FPS: %.2f (%.2fms)", fps, 1000/fps),10,10,20,LIME);
 		DrawText(TextFormat("FRAME: %.4f", dt),10,30,20,LIME);
 
-		Body* body = bodies;
-		while (body) // do while we have a valid pointer, will be NULL at the end of the list
-		{
-			// update body position
-			body->pos = Vector2Add(body->pos, body->vel);
-			// draw body
-			DrawCircle(body->pos.x, body->pos.y, 10, RED);
 
-			body = body->next; // get next body
+		body = ncBodies;
+		while (body) 
+		{
+			DrawCircle((int)body->pos.x, (int)body->pos.y, body->mass, RED);
+			body = body->next;
 		}
 
 		DrawCircle((int)pos.x, (int)pos.y, 10, YELLOW);
@@ -60,6 +73,6 @@ int main(void)
 		EndDrawing();
 	}
 	CloseWindow();
-	free(bodies);
+	free(ncBodies);
 	return 0;
 }

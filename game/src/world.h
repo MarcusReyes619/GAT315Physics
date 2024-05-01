@@ -2,9 +2,9 @@
 #pragma once
 #include "body.h"
 
-extern Body* bodies;
-extern int bodyCount;
+extern NcBody* ncBodies;
+extern int ncBodyCount;
 
-Body* CreateBody();
+NcBody* CreateBody();
 
-void DestoryBody(Body* body);
+void DestoryBody(NcBody* body);

@@ -26,5 +26,8 @@
     <ClInclude Include="src\world.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\intergrator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

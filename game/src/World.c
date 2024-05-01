@@ -2,11 +2,12 @@
 #include "world.h"
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
-Body* bodies = NULL;
-int bodyCount = 0;
+NcBody* ncBodies = NULL;
+int ncBodyCount = 0;
 
-Body* CreateBody() 
+NcBody* CreateBody()
 {
 	/*
 	Allocate memory for new Body
@@ -17,28 +18,28 @@ Body* CreateBody()
 		Increment body count
 		Return new Body
 		*/
-	/*bodies = (Body*)malloc(sizeof(Body) * 10000);
-	assert(bodies != NULL);*/
 
-	Body* createdBody = (Body*)malloc(sizeof(Body));
+	NcBody* createdBody = (NcBody*)malloc(sizeof(NcBody));
 	assert(createdBody);
 
+	memset(createdBody, 0, sizeof(NcBody));
+	
 	createdBody->prev = NULL;
-	createdBody->next = bodies;
+	createdBody->next = ncBodies;
 
-	if (bodyCount != 0) {
+	if (ncBodyCount != 0) {
 
 		createdBody->prev = createdBody;
 	}
-	bodies = createdBody;
-	bodyCount++;
+	ncBodies = createdBody;
+	ncBodyCount++;
 
 	
 	
 	return createdBody;
 }
 
-void DestoryBody(Body* body) 
+void DestoryBody(NcBody* body)
 {
 	assert(body);
 	/*
@@ -56,7 +57,7 @@ void DestoryBody(Body* body)
 	if (body->prev == NULL) {
 		body = body->next;
 	}
-	bodyCount--;
+	ncBodyCount--;
 	free(body);
 
 
