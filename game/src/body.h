@@ -8,4 +8,7 @@ typedef struct Body
 	Vector2 vel;
 	Vector2 force;
 
+
+	struct Body* next;
+	struct Body* prev;
 }Body;
