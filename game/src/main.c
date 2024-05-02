@@ -13,8 +13,8 @@ int main(void)
 	InitWindow(1280, 720, "Physic engine");
 	SetTargetFPS(100);
 
-	
-	
+	//initialzie world
+	ncGravity = (Vector2){ 0,30 };
 	
 	
 	//game
@@ -31,14 +31,18 @@ int main(void)
 			body->pos = pos;
 			
 			body->mass = GetRandomFloatValue(1, 10);
-
+			body->inversMass = 1 / body->mass;
+			body->type = BT_DYNIMIC;
+			body->damping = 0.5f;
+			body->graviryScale = 5;
+			ApplyForce(body, (Vector2){GetRandomFloatValue(-500, 500), GetRandomFloatValue(-500,500) }, FM_VELOCITY);
 		}
 
 		//apply force
 		NcBody* body = ncBodies;
 		while (body) // do while we have a valid pointer, will be NULL at the end of the list
 		{
-			ApplyForce(body, CreateVector2(0,-200));
+			//ApplyForce(body, CreateVector2(0,-200), FM_FORCE);
 			body = body->next;
 		}
 
@@ -46,8 +50,7 @@ int main(void)
 		body = ncBodies;
 		while (body) 
 		{
-			ExplicitEuler(body, dt);
-			ClearForce(body);
+			Step(body, dt);
 			body = body->next;
 		}
 

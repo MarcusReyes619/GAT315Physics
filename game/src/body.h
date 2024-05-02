@@ -2,23 +2,35 @@
 #include "raylib.h"
 #include "raymath.h"
 
-typedef enum NcBodyTpye {
-	STATIC,
-	KINEMATIC,
-	DYNIMIC
+typedef enum NcBodyTpye 
+{
+	BT_STATIC,
+	BT_KINEMATIC,
+	BT_DYNIMIC
 
 }NcBodyType;
 
+typedef enum {
+	FM_FORCE,
+	FM_IMPULSE,
+	FM_VELOCITY
+
+}ncForceMode;
+
 typedef struct NcBody
 {	
-	NcBodyType body;
+	NcBodyType type;
 
+	//acceleration->vel->pos
 	Vector2 pos;
 	Vector2 vel;
+	Vector2 accleration;
 	Vector2 force;
 
 	float mass;
 	float inversMass; // 1 / mass (static = 0)
+	float graviryScale;
+	float damping;
 
 	struct NcBody* next;
 	struct NcBody* prev;
@@ -26,9 +38,25 @@ typedef struct NcBody
 
 }NcBody;
 
-inline void ApplyForce(NcBody* body, Vector2 force) 
+inline void ApplyForce(NcBody* body, Vector2 force, ncForceMode forceMode) 
 {
-	body->force = Vector2Add(body->force, force);
+	if (body->type != BT_DYNIMIC) return;
+
+	
+	switch (forceMode) {
+	case FM_FORCE:
+		body->force = Vector2Add(body->force, force);
+		break;
+	case FM_IMPULSE:
+		//applys a sudden change in momentum
+		body->vel = Vector2Scale(force, body->inversMass);
+		break;
+	case FM_VELOCITY:
+		body->vel = force;
+		break;
+
+
+	}
 
 }
 
@@ -37,4 +65,6 @@ inline ClearForce(NcBody* body) {
 	body->force = Vector2Zero();
 }
 
+void Step(NcBody* body, float timestep);
  
+
