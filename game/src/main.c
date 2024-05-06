@@ -1,8 +1,9 @@
 #include "body.h"
 #include "raylib.h"
-#include "Math.h"
+#include "mathf.h"
 #include "intergrator.h"
 #include "raymath.h"
+#include "force.h"
 #include "world.h"
 #include <stdlib.h>
 #include <assert.h>
@@ -14,7 +15,7 @@ int main(void)
 	SetTargetFPS(100);
 
 	//initialzie world
-	ncGravity = (Vector2){ 0,30 };
+	ncGravity = (Vector2){ 0,0 };
 	
 	
 	//game
@@ -30,21 +31,25 @@ int main(void)
 			NcBody* body = CreateBody();
 			body->pos = pos;
 			
+
+
 			body->mass = GetRandomFloatValue(1, 10);
 			body->inversMass = 1 / body->mass;
 			body->type = BT_DYNIMIC;
 			body->damping = 0.5f;
 			body->graviryScale = 5;
-			ApplyForce(body, (Vector2){GetRandomFloatValue(-500, 500), GetRandomFloatValue(-500,500) }, FM_VELOCITY);
+			ApplyForce(body, (Vector2){GetRandomFloatValue(-60, 60), GetRandomFloatValue(-60,60) }, FM_VELOCITY);
 		}
 
 		//apply force
 		NcBody* body = ncBodies;
-		while (body) // do while we have a valid pointer, will be NULL at the end of the list
-		{
-			//ApplyForce(body, CreateVector2(0,-200), FM_FORCE);
-			body = body->next;
-		}
+		ApllyGravitation(ncBodies, 800);
+
+		//while (body) // do while we have a valid pointer, will be NULL at the end of the list
+		//{
+		//	//ApplyForce(body, CreateVector2(0,-200), FM_FORCE);
+		//	body = body->next;
+		//}
 
 		//apply force
 		body = ncBodies;

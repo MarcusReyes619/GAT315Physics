@@ -12,24 +12,30 @@
     <ClCompile Include="src\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\World.c">
+    <ClCompile Include="src\world.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\body.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\force.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\body.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\intergrator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Math.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\force.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\body.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mathf.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\world.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\intergrator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
