@@ -21,14 +21,11 @@ NcBody* CreateBody()
 
 	if (ncBodyCount != 0) 
 	{
-
 		createdBody->prev = createdBody;
 	}
 	ncBodies = createdBody;
 	ncBodyCount++;
 
-	
-	
 	return createdBody;
 }
 
