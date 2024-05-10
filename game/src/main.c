@@ -35,10 +35,10 @@ int main(void)
 		UpdateEditor(pos);
 
 #pragma region InputControlles
-
+		/*
 		if (IsMouseButtonDown(0)) {
 
-			NcBody* body = CreateBody();
+			NcBody* body = CreateBody(ConvertScreenToWorld(pos)NcEditorData.MassMinValue, NcEditorData);
 			body->pos = ConvertScreenToWorld(pos);
 			body->mass = GetRandomFloatValue(ncEditorData.MassMinValue,ncEditorData.MassMaxValue);
 			body->inversMass = 1 / body->mass;
@@ -92,6 +92,7 @@ int main(void)
 				body->mass = 10;
 				body->inversMass = 1 / body->mass;
 				body->type = BT_DYNIMIC;
+				//body->type ncEditorData.BodyTypeActive;
 				body->damping = 0.5f;
 				body->graviryScale = 5;
 				body->color = ColorFromHSV(GetRandomFloatValue(300, 360), 1, 1);
@@ -100,10 +101,11 @@ int main(void)
 
 			}
 		}
+		*/
 #pragma endregion
 		//apply force
 		
-		ApllyGravitation(ncBodies, ncEditorData.GravatationValue);
+		//ApllyGravitation(ncBodies, ncEditorData.GravatationValue);
 
 		for (NcBody* body = ncBodies; body; body = body->next) {
 			Step(body, dt);

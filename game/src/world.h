@@ -8,6 +8,7 @@ extern NcBody* ncBodies;
 extern int ncBodyCount;
 extern Vector2 ncGravity;
 
-NcBody* CreateBody();
+void AddBody(NcBody* body);
+NcBody* CreateBody(Vector2 pos, float mass, NcBodyType bodyType);
 
 void DestoryBody(NcBody* body);

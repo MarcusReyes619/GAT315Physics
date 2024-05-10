@@ -8,7 +8,7 @@ NcBody* ncBodies = NULL;
 int ncBodyCount = 0;
 Vector2 ncGravity;
 
-NcBody* CreateBody()
+NcBody* CreateBody(Vector2 pos, float mass, NcBodyType bodyType)
 {
 	
 	NcBody* createdBody = (NcBody*)malloc(sizeof(NcBody));
@@ -16,17 +16,27 @@ NcBody* CreateBody()
 
 	memset(createdBody, 0, sizeof(NcBody));
 	
-	createdBody->prev = NULL;
-	createdBody->next = ncBodies;
-
-	if (ncBodyCount != 0) 
-	{
-		createdBody->prev = createdBody;
-	}
-	ncBodies = createdBody;
-	ncBodyCount++;
+	
+	createdBody->pos = pos;
+	createdBody->mass = mass;
+	createdBody->inversMass = (bodyType == BT_DYNIMIC) ? 1 / mass : 0;
+	createdBody->type = bodyType;
 
 	return createdBody;
+}
+
+
+void AddBody(NcBody* body) {
+	body->prev = NULL;
+	body->next = ncBodies;
+
+	if (ncBodyCount != 0)
+	{
+		body->prev = body;
+	}
+	//set head of elements to new element
+	ncBodies = body;
+	ncBodyCount++;
 }
 
 void DestoryBody(NcBody* body)
