@@ -25,5 +25,5 @@ extern bool ncEditorActive;
 extern bool ncEditorIntersect;
 
 void InitEditor();
-void UpdateEditor(Vector2 mousePosition);
-void DrawEditor();
+void UpdateEditor(Vector2 pos);
+void DrawEditor(Vector2 pos);

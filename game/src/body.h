@@ -4,9 +4,11 @@
 
 typedef enum NcBodyTpye 
 {
-	BT_STATIC,
+	BT_DYNIMIC,
 	BT_KINEMATIC,
-	BT_DYNIMIC
+	BT_STATIC
+	
+	
 
 }NcBodyType;
 

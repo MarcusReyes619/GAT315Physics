@@ -15,8 +15,6 @@ NcBody* CreateBody(Vector2 pos, float mass, NcBodyType bodyType)
 	assert(createdBody);
 
 	memset(createdBody, 0, sizeof(NcBody));
-	
-	
 	createdBody->pos = pos;
 	createdBody->mass = mass;
 	createdBody->inversMass = (bodyType == BT_DYNIMIC) ? 1 / mass : 0;
@@ -27,13 +25,13 @@ NcBody* CreateBody(Vector2 pos, float mass, NcBodyType bodyType)
 
 
 void AddBody(NcBody* body) {
+
+	assert(body);
+
 	body->prev = NULL;
 	body->next = ncBodies;
 
-	if (ncBodyCount != 0)
-	{
-		body->prev = body;
-	}
+	if (ncBodies) ncBodies->prev = body;
 	//set head of elements to new element
 	ncBodies = body;
 	ncBodyCount++;
@@ -52,8 +50,8 @@ void DestoryBody(NcBody* body)
 	ncBodyCount--;
 	free(body);
 
-
-
-
 }
 
+void DestoryAllBody() {
+
+}
