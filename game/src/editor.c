@@ -34,7 +34,7 @@ void InitEditor()
     ncEditorData.WindowBox000Active = true;
     ncEditorData.BodyTypeEditMode = false;
     ncEditorData.BodyTypeActive = 0;
-    ncEditorData.MassMinValue = 0.1f;
+    ncEditorData.MassMinValue = 2.0f;
     ncEditorData.MaxMassValue = 0.f;
     ncEditorData.DampingValue = 0.0f;
     ncEditorData.GravityScaleValue = 0.0f;

@@ -6,6 +6,8 @@
 #include "force.h"
 #include "spring.h"
 #include "world.h"
+#include "collision.h"
+#include "contact.h"
 #include "render.h"
 #include "editor.h"
 #include <stdlib.h>
@@ -104,11 +106,18 @@ int main(void)
 		//apply force
 		
 		ApllyGravitation(ncBodies, ncEditorData.GravitationValue);
+		ApplySpringForce(ncSprings);
 
 		for (NcBody* body = ncBodies; body; body = body->next) {
 			Step(body, dt);
 				
 		}
+
+		//collision
+		ncContact_t* contacts = NULL;
+		CreateContacts(ncBodies, &contacts);
+
+
 		//draw
 		BeginDrawing();
 		ClearBackground(BLACK);
@@ -134,6 +143,13 @@ int main(void)
 			Vector2 screen2 = ConvertWorldToScreen(spring->body2->pos);
 			DrawLine((int)screen.x, (int)screen.y, (int)screen2.x, (int)screen2.y, YELLOW);
 			
+		}
+
+		//draw contacts
+		for (ncContact_t* contact = contacts; contact; contact = contact->next) {
+
+			Vector2 screen = ConvertWorldToScreen(contact->body1->pos);
+			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(contact->body1->mass * 0.5f), RED);
 		}
 
 		DrawCircleLines((int)pos.x, (int)pos.y, 10, WHITE);
