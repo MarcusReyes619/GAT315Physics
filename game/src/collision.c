@@ -23,7 +23,7 @@ void CreateContacts(NcBody* bodies, ncContact_t** contacts) {
 
 		for (NcBody* body2 = body->next; body2; body2 = body2->next) {
 			if (body == body2)continue;
-			if (body != BT_DYNIMIC && body2 != BT_DYNIMIC) continue;
+			if (body->type != BT_DYNIMIC && body2->type != BT_DYNIMIC) continue;
 
 			if (Intersects(body, body2)) {
 				ncContact_t* contact = GenerateContact(body, body2);
@@ -62,9 +62,30 @@ ncContact_t* GenerateContact(NcBody* body1, NcBody* body2) {
 
 void SeparateContacts(ncContact_t* contacts) {
 
+	for (ncContact_t* contact = contacts; contact; contact = contact->next) {
+
+		float totalInversMass = contact->body1->inversMass + contact->body2->inversMass;
+		Vector2 separate = Vector2Scale(contact->normal,contact->depth / totalInversMass);
+
+		contact->body1->pos = Vector2Add(contact->body1->pos, Vector2Scale(separate,contact->body1->inversMass));
+		contact->body2->pos = Vector2Add(contact->body2->pos, Vector2Scale(separate, -contact->body2->inversMass));
+	}
 
 }
 void ResolveContacts(ncContact_t* contacts) {
+	for (ncContact_t* contact = contacts; contact; contact = contact->next) {
+		Vector2 rv = Vector2Subtract(contact->body1->vel, contact->body2->vel);
+		float nv = Vector2DotProduct(rv, contact->normal);
+
+		if (nv > 0) continue;
+
+		float tim = contact->body1->inversMass + contact->body2->inversMass;
+
+		float impulseMag = (float)(-(1 + contact->restitution) * nv / tim);
+		Vector2 impulseVec = Vector2Scale(contact->normal, impulseMag);
+		ApplyForce(contact->body1, impulseVec, contact->body1->type);
+		ApplyForce(contact->body2, Vector2Negate(impulseVec), contact->body2->type);
+	}
 
 
 }

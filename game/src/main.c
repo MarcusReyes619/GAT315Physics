@@ -49,13 +49,13 @@ int main(void)
 		
 #pragma region InputControlles
 		
-		if (IsMouseButtonPressed(0)) {
+		if (IsMouseButtonPressed(0)|| IsMouseButtonDown(0) && IsKeyDown(KEY_LEFT_SHIFT)) {
 
 			NcBody* body = CreateBody(ConvertScreenToWorld(pos),ncEditorData.MassMinValue, ncEditorData.BodyTypeActive);		
 			body->damping = ncEditorData.DampingValue;
 			body->graviryScale = ncEditorData.GravityScaleValue;
 			body->color = ColorFromHSV(GetRandomFloatValue(0, 360), 1, 1);
-
+			body->restitution = 0.3f;
 			AddBody(body);
 		}
 		
@@ -108,6 +108,9 @@ int main(void)
 		ApllyGravitation(ncBodies, ncEditorData.GravitationValue);
 		ApplySpringForce(ncSprings);
 
+	
+		
+
 		for (NcBody* body = ncBodies; body; body = body->next) {
 			Step(body, dt);
 				
@@ -116,7 +119,8 @@ int main(void)
 		//collision
 		ncContact_t* contacts = NULL;
 		CreateContacts(ncBodies, &contacts);
-
+		SeparateContacts(contacts);
+		ResolveContacts(contacts);
 
 		//draw
 		BeginDrawing();
@@ -149,7 +153,7 @@ int main(void)
 		for (ncContact_t* contact = contacts; contact; contact = contact->next) {
 
 			Vector2 screen = ConvertWorldToScreen(contact->body1->pos);
-			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(contact->body1->mass * 0.5f), RED);
+			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(contact->body1->mass * 0.9f), RED);
 		}
 
 		DrawCircleLines((int)pos.x, (int)pos.y, 10, WHITE);

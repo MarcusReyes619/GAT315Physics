@@ -53,7 +53,7 @@ inline void ApplyForce(NcBody* body, Vector2 force, ncForceMode forceMode)
 		break;
 	case FM_IMPULSE:
 		//applys a sudden change in momentum
-		body->vel = Vector2Scale(force, body->inversMass);
+		body->vel =Vector2Add(Vector2Scale(force, body->inversMass),force,body->inversMass);
 		break;
 	case FM_VELOCITY:
 		body->vel = force;
