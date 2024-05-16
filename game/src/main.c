@@ -35,6 +35,7 @@ int main(void)
 		float dt = GetFrameTime();
 		float fps = (float)GetFPS();
 		
+		//setting screen
 		Vector2 pos = GetMousePosition();
 		ncScreenZoom += GetMouseWheelMove() * 0.2f;
 		ncScreenZoom = Clamp(ncScreenZoom, 0.1f, 10);
@@ -71,37 +72,6 @@ int main(void)
 		}
 			
 			
-		
-		
-	
-		if (IsMouseButtonPressed(2)) {
-
-			for (int i = 0; i <= 10; i++) {
-				//Vector2 force = Vector2Scale(GetVector2FromAnge(GetRandomFloatValue(0, 360) * DEG2RAD), GetRandomFloatValue(1000, 2000));
-				NcBody* body = CreateBody(ConvertScreenToWorld(pos), ncEditorData.MassMinValue, ncEditorData.BodyTypeActive);				
-				body->damping = 0.5f;
-				body->graviryScale = 5;
-				body->color = ColorFromHSV(GetRandomFloatValue(180, 265), 1, 1);
-
-				//ApplyForce(body, force, FM_IMPULSE);
-
-			}
-		}
-		
-		if (IsMouseButtonPressed(3)) {
-
-			for (int i = 0; i <= 10; i++) {
-				//Vector2 force = Vector2Scale(GetVector2FromAnge(GetRandomFloatValue(0, 360) * DEG2RAD), GetRandomFloatValue(1000, 2000));
-				NcBody* body = CreateBody(ConvertScreenToWorld(pos), ncEditorData.MassMinValue, ncEditorData.BodyTypeActive);
-				body->damping = 0.5f;
-				body->graviryScale = 5;
-				body->color = ColorFromHSV(GetRandomFloatValue(300, 360), 1, 1);
-
-				//ApplyForce(body, force, FM_IMPULSE);
-
-			}
-		}
-		
 #pragma endregion
 		//apply force
 		
@@ -156,13 +126,15 @@ int main(void)
 			DrawCircle((int)screen.x, (int)screen.y, ConvertWorldToPixel(contact->body1->mass * 0.9f), RED);
 		}
 
+
 		DrawCircleLines((int)pos.x, (int)pos.y, 10, WHITE);
 		DrawEditor(pos);
 
 		EndDrawing();
 	}
+
 	DestoryAllSprings();
-	 DestoryAllBody();
+	DestoryAllBody();
 	CloseWindow();
 	
 	return 0;
