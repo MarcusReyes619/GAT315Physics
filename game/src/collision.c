@@ -62,6 +62,7 @@ ncContact_t* GenerateContact(NcBody* body1, NcBody* body2) {
 
     // Calculate the penetration depth
     float radius = (body1->mass + body2->mass);
+
     contact->depth = radius - distance;
 
     // Normalize the direction vector to get the contact normal

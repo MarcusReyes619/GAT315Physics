@@ -3,7 +3,7 @@
 #include "raymath.h"
 
 typedef enum NcBodyTpye 
-{
+{ 
 	BT_DYNIMIC,
 	BT_KINEMATIC,
 	BT_STATIC

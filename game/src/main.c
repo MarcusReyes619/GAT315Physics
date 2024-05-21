@@ -27,7 +27,10 @@ int main(void)
 	ncScreenZoom = 5;
 	ncGravity = (Vector2){ 0,-1 };
 	
-	
+	//time
+	float fixedTimestep = 1.0f / 50;
+	float timeAccumulator = 0;
+
 	//game
 	while (!WindowShouldClose())
 	{
@@ -47,6 +50,11 @@ int main(void)
 			Vector2 screen = ConvertScreenToWorld(selecetedBody->pos);
 			DrawCircleLines(screen.x, screen.y, ConvertWorldToPixel(selecetedBody->mass) * 5, YELLOW);
 		}
+		
+		//collision
+		ncContact_t* contacts = NULL;
+		CreateContacts(ncBodies, &contacts);
+		
 		
 #pragma region InputControlles
 		
@@ -73,24 +81,31 @@ int main(void)
 			
 			
 #pragma endregion
-		//apply force
-		
-		ApllyGravitation(ncBodies, ncEditorData.GravitationValue);
-		ApplySpringForce(ncSprings);
+		//time loop
+		timeAccumulator += dt;
 
-	
-		
+		while (fixedTimestep <= timeAccumulator) {
+			fixedTimestep -= timeAccumulator;
+			//apply force
+			ApllyGravitation(ncBodies, ncEditorData.GravitationValue);
+			ApplySpringForce(ncSprings);
 
-		for (NcBody* body = ncBodies; body; body = body->next) {
-			Step(body, dt);
-				
+			for (NcBody* body = ncBodies; body; body = body->next) {
+				Step(body, fixedTimestep);
+
+			}
+			DestroyAllContacts(contacts);
+			CreateContacts(ncBodies, &contacts);
+			SeparateContacts(contacts);
+			ResolveContacts(contacts);
+
 		}
 
-		//collision
-		ncContact_t* contacts = NULL;
-		CreateContacts(ncBodies, &contacts);
-		SeparateContacts(contacts);
-		ResolveContacts(contacts);
+		
+
+	
+
+	
 
 		//draw
 		BeginDrawing();
@@ -135,6 +150,7 @@ int main(void)
 
 	DestoryAllSprings();
 	DestoryAllBody();
+	
 	CloseWindow();
 	
 	return 0;
