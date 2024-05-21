@@ -1,3 +1,12 @@
+# 2D Physics Engine
+
+# this project was made for my GAT315 game physics class
+we are using VS and raylib to make 2d game physics. 
+# technologies used
+C++,
+C,
+Raylib
+
 # Raylib Setup using Premake5
 This is a simplified set of instructions for how to setup a project using premake.
 
